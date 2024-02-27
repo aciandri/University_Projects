@@ -1,5 +1,6 @@
 use "/Users/aurora/Desktop/progetto_demo_soc/DATI EVS/EVS data 1981-2008.dta", clear
 *ssc install fre, replace
+* DATE: September 2020
 
 /* Codings of missing values:
 -5             .A             other missing

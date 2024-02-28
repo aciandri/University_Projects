@@ -16,8 +16,12 @@ The goal was to identify fraudulent credit card transactions on a dataset contai
 
 The project received a score of 3 out of 4 points during the evaluation.
 
-### 2: Multivariate time serie analysis: dynamic OLS - 2020 (R studio)
+### 2: Bivariate time serie analysis: dynamic OLS - 2020 (R studio)
+I realized this analysis with the help of Professor Magrini of the University of Florence as part of my B.Sc. thesis: "Dynamic Linear Model for the estimation of Dynamic Causal Effects in the Economic Field" in 2020.
 
+The goal was to study the unidirectional relationship from advertisment expenses to sales, analyzing the case study of Lydia Pinkham's company. 
+
+The thesis received a score of 3 out of 3 points during the evaluation.
 
 ### 3: Social demography: number of children and educational level - 2020 (STATA)
 

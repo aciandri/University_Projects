@@ -1,14 +1,20 @@
 # Credit card fraud detection
+This project contains a classification analysis that aims to identify fraudulent credit card transactions.
 
-This project was developed by two classmates of mine (Ellada Aslanova and Shireesha Pothuganti) and I in 2021 for the "Fundamentals of Information Systems" exam, which was held by Professors Silvello and Di Nunzio and provided by the Mathematical Department for the course in Data Science.
+Me and two classmates of mine (Ellada Aslanova and Shireesha Pothuganti) realized this analysis in 2021 for the "Fundamentals of Information Systems" exam, which was held by Professors Silvello and Di Nunzio and provided by the Mathematical Department for the course in Data Science.
 
-This project was evaluated with a score of 3 points out of 4.
+The project received a score of 3 out of 4 points during the evaluation.
 
 ## Overview
 
-For this project, the Professors provided us with a dataset containing transactions made by credit cards in September 2013 by European cardholders that occurred in two days. It contains 492 frauds out of 284,807 transactions, so the dataset is highly unbalanced (only 0.172% of all transactions are frauds).
+For this project, the Professors provided us with a dataset containing transactions made by credit cards in September 2013 by European cardholders that occurred in two days. It contains 31 features (28 of which were computed through PCA) collected over 284,807 transactions. The dataset is highly unbalanced, as only 0.172% of all transactions are frauds.
 
-The task was to design and build a system that automatically recognizes a fraudulent transaction.
+The task was to design and build a system that automatically recognizes a fraudulent transaction. In order to achieve this, we executed an EDA, data cleaning and feature selection operations. We then applied the SMOTE and split the observations between train and test sets. 
+To classify the records, we used two models:
+- Logistic regression: a parametric generalized linear model which is characterized by a logit link function, which makes the model appropriate for the analysis of binomial dependent variables.
+- XGBoost (Extreme Gradient Boosting): a semi-parametric method based on the combination of the results of different weaker models, that aims to minimize the classification error: in every iteration, it constructs a weak model, which learns from the mistakes made by the former one.
+
+The results are evaluated mainly through the accuracy score, which shows a good predictive power of the variables considered in the dataset.
 
 ## Main concepts
 

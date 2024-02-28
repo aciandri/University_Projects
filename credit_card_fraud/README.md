@@ -37,7 +37,7 @@ As the project was elaborated at the start of my M.Sc. course, I'd like to make 
 - I would've looked more in-depth at the outliers, as they could potentially be interesting cases to study, instead of just deleting them all.
 - I wouldn't have deleted the feature "Amount", as I wouldn't have considered it a leaker variable.
 - To overcome the problem of unbalanced data, given the high number of records available, I would've rather undersampled than oversampled.
-- The evaluation of the models was based mainly on the accuracy score, but, in reality, it can be misleading as our goal was to identify the fraudulent cases: on the numerator it has the sum of true positives and true negatives, therefore in the case of unbalanced data a model that classify all the observations as negatives would show a high accuracy score, but it would be useless for the goal of the analysis. It would've been better to evaluate the models according to the F1-score.
+- The evaluation of the models was based mainly on the accuracy score, but, in reality, it can be misleading as our goal was to identify the fraudulent cases: on the numerator, it has the sum of true positives and true negatives, therefore in the case of unbalanced data a model that classify all the observations as negatives would show a high accuracy score, but it would be useless for the goal of the analysis. It would've been better to evaluate the models according to the F1-score.
 - The results reported on the confusion matrix are suspiciously high: there might be a leaker variable among the ones produced through PCA.
 - I would've applied a forward hybrid stepwise selection to select the variables for the logistic regression model and analyzed the data through other models (for instance, a Random Forest). 
 

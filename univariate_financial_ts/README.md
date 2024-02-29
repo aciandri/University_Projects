@@ -6,7 +6,14 @@ I realized this analysis as part of a group project carried on by me and my form
 The exam, which was composed of an oral exam and a project, was graded as 30/30 by the Professor.
 
 ## Overview
-For this project, we used the dataset about the financial title “Alibaba Group Holding Limited (BABA)” supplied by the website “YAHOO! Finance” e descrivono le quotazioni giornaliere dell’azienda (espresse in USD) dal 19/09/2014 al 31/01/2020, per un totale di 1351 osservazioni.
+For this project, we used the dataset about the financial title “Alibaba Group Holding Limited (BABA)” supplied by the website “YAHOO! Finance”.
+
+
+L’obiettivo di questa analisi era quella di fare previsioni sul futuro andamento delle azioni dell’azienda “Alibaba Group Holding Limited (BABA)”.
+Per fare ciò, si è partiti da un’analisi preliminare in cui si è notata l’assenza di stazionarietà, in base ai test DF (applicato tramite la procedura Di Fonzo-Lisi) e il KPSS i quali hanno confermato la presenza di radici unitarie.
+
+
+e descrivono le quotazioni giornaliere dell’azienda (espresse in USD) dal 19/09/2014 al 31/01/2020, per un totale di 1351 osservazioni.
 Le variabili sono:
 - Date: data di rilevazione;
 - Open: prezzo di apertura;

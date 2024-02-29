@@ -12,7 +12,7 @@ I began selecting the records of interest and constructing the variables relevan
 
 The results show a significant quadratic effect of the educational level on the number of children at the end of the reproductive age.
 
-The full results and analysis are presented in the pdf report uploaded in this fold (in Italian).
+The full analysis is presented in the pdf report uploaded in this fold (in Italian).
 
 ## Project structure
 The STATA code uploaded here contains all the steps conducted for the analysis:

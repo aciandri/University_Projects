@@ -17,15 +17,5 @@ We then tried using different GARCH models jointly with an AR(1) or MA(1). By do
 
 We then obtained, through this model, 10 forecasts that suggest a constant trend of the stock over time (a result that could be biased, as it does not take into account the epidemic brought by the Coronavirus) and a volatility that slowly decreases the further away the prediction go since the last observation.
 
+## Main concepts
 
-
-
-e descrivono le quotazioni giornaliere dell’azienda (espresse in USD) dal 19/09/2014 al 31/01/2020, per un totale di 1351 osservazioni.
-Le variabili sono:
-- Date: data di rilevazione;
-- Open: prezzo di apertura;
-- High: prezzo massimo;
-- Low: prezzo minimo;
-- Close: prezzo di chiusura;
-- Adjusted: prezzi “Close” aggiustati per i dividendi;
-- Volume: numero di azioni scambiate nel giorno considerato.

@@ -24,7 +24,11 @@ The goal was to study the unidirectional relationship from advertisment expenses
 The thesis received a score of 3 out of 3 points during the evaluation.
 
 ### 3: Social demography: number of children and educational level - 2020 (STATA)
+This is a project I worked on for the exam "Social Demography" attended during the last year of my B.Sc. at the University of Florence.
 
+The goal was to study the effect of women's education on the number of children at the end of the the reproductive age, net of some control and intervening variables. The analysis was conducted on a EVS (European Social Values) dataset referred to the years 1981-2008.
+
+The esam, which was composed of an oral exam and the project, received a score of 28 out of 30 points during the evaluation.
 
 ### 4: Univariate financial time series analysis: - 2020 (R studio)
 

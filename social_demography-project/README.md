@@ -16,8 +16,10 @@ The full analysis is presented in the pdf report uploaded in this fold (in Itali
 
 ## Project structure
 The STATA code uploaded here contains all the steps conducted for the analysis:
-1. Select records: I selected the observations that referred to women between the ages of 40 and 75 and, therefore, remained with 47 444 records.
-2. Variables creation and selection: I created a variable to account for the number of children (as it changed among the waves) and considered it as the dependent variable. I selected the continuous variable about the educational level as the independent variable. Both of these features contained a limited number of missing values, which were therefore removed.
+### 1. Select records
+I selected the observations that referred to women between the ages of 40 and 75 and, therefore, remained with 47 444 records.
+### 2. Variables creation and selection
+I created a variable to account for the number of children (as it changed among the waves) and considered it as the dependent variable. I selected the continuous variable about the educational level as the independent variable. Both of these features contained a limited number of missing values, which were therefore removed.
 
 I used the following as control variables:
 
@@ -34,11 +36,15 @@ I used the following as intervening variables:
 - domestic labor division (measured by the survey question: “Men should take the same responsibility for home and children”).
 - job.  
 
-3. EDA - Graphical univariate analysis: in this step, I studied univariate marginal distributions of all the variables included in the analysis.
-4. Multivariate analysis: in this step, I analyzed the bivariate and multivariate linear regression models, ergo the gross and net effects of the independent variable on the dependent one. In the latter model, I also tried to insert quadratic and interaction effects.
+### 3. EDA: Graphical univariate analysis
+In this step, I studied univariate marginal distributions of all the variables included in the analysis.
 
-In this step, I selected the following model: ![image](https://github.com/aciandri/University_Projects/assets/161453657/64e28ddc-e445-4835-b962-32a9e0a20c4b)
+### 4. Multivariate analysis
+In this step, I analyzed the bivariate and multivariate linear regression models, ergo the gross and net effects of the independent variable on the dependent one. In the latter model, I also tried to insert quadratic and interaction effects.
 
+I selected the following model: ![image](https://github.com/aciandri/University_Projects/assets/161453657/64e28ddc-e445-4835-b962-32a9e0a20c4b)
+
+### Conclusions
 At the end of this analysis, it can be stated that there appears to be a highly significant direct effect of education on the number of children at the end of the reproductive age. This effect determines a quadratic trend of the variable of interest concerning the independent one, with a decrease of 0.0859 for each additional year of education up to approximately the age of 28 at the end of studies, and then an increase of 0.00143 for higher ages (in line with the most recent evidence).
 
 Furthermore, women with a higher income tend to have more children net of the other variables studied, as initially hypothesized. A person's religiosity and their vision of gender equality are also associated in the model with significant positive effects on the number of children; while the increase in age at first child is associated with a decrease in the number of children. Moreover, a highly significant negative interaction was found between the independent variable and the age at birth of the first child: as the latter increases, the effect of an extra year of education on the number of children decreases by 0.0498 points percentage and the quadratic one increases by 0.0000623 percentage points.

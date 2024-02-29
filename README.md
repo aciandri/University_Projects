@@ -26,7 +26,7 @@ In order to do that, I applied some tools for time series analysis, for instance
 The thesis received a score of 3 out of 3 points during the evaluation.
 
 
-### [3: Social demography: number of children and educational level - 2020 (STATA)] (https://github.com/aciandri/University_Projects/tree/main/social_demography-project)
+### [3: Social demography: number of children and educational level - 2020 (STATA)](https://github.com/aciandri/University_Projects/tree/main/social_demography-project)
 This is a project I worked on for the exam "Social Demography" attended during the last year of my B.Sc. at the University of Florence.
 
 The goal was to study the effect of women's education on the number of children at the end of the reproductive age, net of some control and intervening variables. The analysis was conducted on an EVS (European Social Values) dataset referred to the years 1981-2008.

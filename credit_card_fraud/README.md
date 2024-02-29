@@ -31,21 +31,21 @@ The results are evaluated mainly through the accuracy score, which shows a good 
 The Python notebook uploaded here contains all the steps conducted to implement the system:
 1. EDA (Explorative Data Analysis): in this step, we evaluated the differences between fraudulent and non-fraudulent transactions, studied the correlation between variables using a heatplot, and analyzed their dispersion.
 2. Data cleaning: in this step, we dealt with missing values, duplicated rows, and outliers. We found no missing values and proceeded to delete the duplicated rows. To address the issue, I created two functions - out_cleaner and change (you can view them in chunk 15). These functions were designed to remove observations that fell outside the InterQuartile Range (IQR). Due to the large number of observations in the dataset, this operation would have been very time-consuming if brought out in simpler ways.
-3. Features selection: in this step, we computed the IV (given the fact that we had no way of interpreting the features, this was considered the best way of selecting the variables): for some variables the informative value was suspiciously high (according to Shiddiqi, values higher than 0.5 can be considered suspicious, as they're too good to be true). We then computed the VIF and decided to delete the variable relative to the amount of the transaction.
+3. Features selection: in this step, we computed the IV (given the fact that we had no way of interpreting the features, this was considered the best way of selecting the variables): for some variables the informative value was suspiciously high (according to Shiddiqi, values higher than 0.5 can be considered suspicious, as they're too good to be true). We then computed the VIF and decided to delete the variable relative to the amount of the transaction as it was considered "too good" and therefore a potential leaker.
 4. Training and validation: in this step, we applied the SMOTE and divided our data into two parts: 80% of the records were assigned to the train set and 20% to the test set. We then applied two models: logistic regression and XGBoost to classify our observations, which were evaluated according to the accuracy score and the F1-score.
 5. Conclusions: we concluded the appropriateness of the features selected, as both models showed good values of accuracy (logistic regression: 0.9414; XGBoost: 0.9991).
 
-## Corrections
+## Enhancements and Learnings
 
-As the project was elaborated at the start of my M.Sc. course, I'd like to make some notes on the work we've conducted:
+As the project was elaborated at the start of my M.Sc. course, I'd like to highlight some potential improvement I'd make in the work we've conducted, based on the knowledge I've gained since then:
 
 - Given that the variables were computed through PCA, showing the heatplot and studying the correlation among the variables could've been avoided.
 - I would've looked more in-depth at the outliers, as they could potentially be interesting cases to study, instead of just deleting them all.
-- I wouldn't have deleted the feature "Amount", as I wouldn't have considered it a leaker variable.
-- To overcome the problem of unbalanced data, given the high number of records available, I would've rather undersampled than oversampled.
-- The evaluation of the models was based mainly on the accuracy score, but, in reality, it can be misleading as our goal was to identify the fraudulent cases: on the numerator, it has the sum of true positives and true negatives, therefore in the case of unbalanced data a model that classify all the observations as negatives would show a high accuracy score, but it would be useless for the goal of the analysis. It would've been better to evaluate the models according to the F1-score.
-- The results reported on the confusion matrix are suspiciously high: there might be a leaker variable among the ones produced through PCA.
-- I would've applied a forward hybrid stepwise selection to select the variables for the logistic regression model and analyzed the data through other models (for instance, a Random Forest). 
+- I wouldn't have deleted the feature "Amount", as I don't see any relevant reason why it would be considered a leaker.
+- To overcome the problem of unbalanced data, given the high number of records available, I would've rather undersampled than oversampled. Furthermore using the oversampling techniques with such a low number of positive cases could lead to overfitting, i.e. the models could recognize non-structural patterns as patterns to identify the class of interest.
+- The evaluation of the models was based mainly on the accuracy score. However, in reality, it can be misleading as our goal was to identify the fraudulent cases in a very unbalanced dataset: the index depends on both the sum of true positives and true negatives, therefore in the case of unbalanced data a model that classify all the observations as negatives would show a high accuracy score, but it would be useless for the goal of the analysis. It would've been better to evaluate the models according to the F1-score.
+- The results reported on the confusion matrix are suspiciously high, which suggest there might be a leaker variable among the ones produced through PCA. Since the variables aren't interpretable in any way, a possible solution could be to adapt a Classification Tree and analyze (and eventually remove) the variable selected for the root of the binary tree.
+- Given that the dimensionality of the data is not small, I would've applied a forward hybrid stepwise selection to select the variables for the logistic regression model and analyzed the data through other models (for instance, a Random Forest, which is based on the combination of weaker models and it's a good instrument for prediction and feature selection). 
 
 
 

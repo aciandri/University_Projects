@@ -36,7 +36,19 @@ In this project, I based my analysis on social demographic theories and applied 
 The test, which was composed of an oral exam and the project, received a score of 28 out of 30 points during the evaluation.
 
 
-### 4: Univariate financial time series analysis: - 2020 (R studio)
+### [ 4: Univariate financial time series analysis: - 2020 (R studio) ](https://github.com/aciandri/University_Projects/tree/main/univariate_financial_ts)
+This is a part of a group project I worked on with my former classmate Dai Xuanye for the exam "Economic Statistics" attended during the last year of my B.Sc. at the University of Florence. The course was held by Professor Cipollini, whom provided us with some useful functions used in analysis.
+
+The goal was to carry out a univariate time series analysis to study the trend of the daily cloring prices of the financial title "Alibaba Group Holding Limited (BABA)" over time. Specifically, we used the data referred to the time period 19709/2014-31/01/2020. We began the analysis with an EDA (Exploratory Data Analysis), residuals analysis of an ARMA model and an ARCH test to check the homoskedasticity of the series. We then applied GARCH and ARMA models to fit the data and obtained forecasts 10 steps ahead.
+
+The exam was composed of an oral exam and a group project and was graded as 30/30 by the Professor.
+
+### 5: [Univariate economic time serie analysis: - 2020](https://github.com/aciandri/University_Projects/tree/main/univariate_economic_ts)
 
 
-### 5: Univariate economic time serie analysis: - 2020
+
+
+
+
+
+

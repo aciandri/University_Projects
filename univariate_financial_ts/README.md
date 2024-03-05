@@ -1,26 +1,26 @@
 # Univariate financial time series analysis: Alibaba Group Holding Limited case study
-This project contains a univariate financial time series analysis that aims to study the trend over time of the daily closing prices of the financial title “Alibaba Group Holding Limited (BABA)” during the period 19/09/2014 – 31/01/2020. This project aimed to predict the future trend of the stock.
+This project consists of a univariate financial time series analysis that aims to study the trend of the daily closing prices of the financial title "Alibaba Group Holding Limited (BABA)" over time. Specifically, we used the data referred to the period 19/09/2014-31/01/2020. This project aimed to predict the future trend of the stock.
 
 I realized this analysis as part of a group project carried on by me and my former classmate Dai Xuanye in 2020 for the "Economic Statistics" course, held by Professor Cipollini and provided by the Statistics Department of the University of Florence. For this project, the Professor supplied us with some useful functions written by him that you can find at the start of the project.
 
-The exam, which was composed of an oral exam and a project, was graded as 30/30 by the Professor.
+The final exam involved an oral exam and a project and was graded as 30/30 by the Professor.
 
 ## Overview
-For this project, we used the dataset about the financial title “Alibaba Group Holding Limited (BABA)” supplied by the website “YAHOO! Finance”.
+For this project, we used the daily closing prices dataset of the financial title “Alibaba Group Holding Limited (BABA)” supplied by the website “YAHOO! Finance”.
 
-The goal of this analysis was to predict the future trends of the company's stocks. 
+The goal of this analysis was to study the daily closing prices and predict the future trends of the company's stocks. 
 
-We began carrying out an EDA (Exploratory Data Analysis) and determined the non-stationarity of the series through the KPSS test and Di Fonzo-Lisi procedure.
+We began carrying out an EDA (Exploratory Data Analysis) and determined the non-stationarity of the series through the KPSS test and the Di Fonzo-Lisi procedure.
 Afterward, we conducted a performance analysis on the log returns and estimated the following models:
 
  - ARMA(1,1): the residuals analysis and an ARCH test showed the presence of heteroskedasticity, which seems to "vanish" quickly.
- - simple GARCH: its standardized residuals showed a peak at lag=1 and showed correlation.
- - GARCH models jointly with an AR(1) or MA(1): the Mincer Zarnowitz Diagnostics and the Diebold-Mariano test showed that the MA(1) – T-GARCH(1,1) model gives significantly better predictions than the others. Analyzing this model in more detail, we found modest correlations between the residuals and stable and significant parameters (except one).
+ - simple GARCH: its standardized residuals showed a peak at lag=1 and the presence of correlation.
+ - GARCH models jointly with an AR(1) or MA(1): the Mincer Zarnowitz Diagnostics and the Diebold-Mariano test showed that the MA(1) – T-GARCH(1,1) model gives significantly better predictions than the others. Analyzing this model in more detail, we found modest correlations between the residuals and generally stable and significant parameters.
 
 We then used the MA(1) – T-GARCH(1,1) model to obtain 10 forecasts. They show a constant trend of the stock over time (a result that could be biased, as it does not take into account the epidemic brought by the Coronavirus) and a volatility that slowly decreases the further away the prediction goes since the last observation.
 
 ## Main concepts
-- Weak stationarity: it's the most relevant and desirable characteristic a time series can have. Simply put, we have stationarity when the first two moments of the distribution of the variables that compose the stochastic process don't depend on time, for instance, if we consider a Normal distribution, which is defined only by its two first moments (so mean, variance and covariance), under the hypothesis of stationarity the distribution remains the same throughout time.
+- (Weak) stationarity: a time series is called stationary if its first two moments don't depend on time. For instance, if we consider a Normal distribution, which is defined only by its two first moments (so mean, variance and covariance), under the hypothesis of stationarity the distribution remains the same throughout time.
 - Di Fonzo-Lisi procedure: it's a procedure that involves multiple ADF (Augmented Dickey-Fuller) tests used to verify the stationarity of the process.
 - Autocorrelation: it's the presence of a significant correlation among the variables that compose the same process, i.e. the process at time t is correlated with the process at time t+k.
 - Integrated process of order 1: it's a non-stationary process, whose first difference is stationary, i.e. y_t - y_{t-1} is stationary.

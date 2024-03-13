@@ -16,7 +16,7 @@ The goal was to identify fraudulent credit card transactions on a dataset contai
 
 The project received a score of 3 out of 4 points during the evaluation.
 
-### [2: Bivariate time series analysis: dynamic OLS - 2020 (R studio)](https://github.com/aciandri/University_Projects/tree/main/multivariate_ts)
+### [ 2: Bivariate time series analysis: dynamic OLS - 2020 (R studio)](https://github.com/aciandri/University_Projects/tree/main/multivariate_ts)
 
 I realized this analysis with the help of Professor Magrini of the University of Florence as part of my B.Sc. thesis: "Dynamic Linear Model for the estimation of Dynamic Causal Effects in the Economic Field" in 2020.
 
@@ -26,24 +26,33 @@ In this project, I, therefore, employed some tools for time series analysis, for
 The thesis received a score of 3 out of 3 points during the evaluation.
 
 
-### [3: Social demography: number of children and educational level - 2020 (STATA)](https://github.com/aciandri/University_Projects/tree/main/social_demography-project)
+### [ 3: Social demography: number of children and educational level - 2020 (STATA)](https://github.com/aciandri/University_Projects/tree/main/social_demography-project)
 This is a project I worked on for the exam "Social Demography" attended during the last year of my B.Sc. at the University of Florence.
 
 The goal was to study the effect of women's education on the number of children at the end of the reproductive age, net of some control and intervening variables. The analysis was conducted on an EVS (European Social Values) dataset referred to the years 1981-2008.
 
 In this project, I based my analysis on social demographic theories and applied simple but effective tools (graphical analysis and linear regression models) to reply to the research question.
 
-The test, which was composed of an oral exam and the project, received a score of 28 out of 30 points during the evaluation.
+The test was composed of an oral exam and the project and was graded as 28/30 during the evaluation.
 
 
 ### [ 4: Univariate financial time series analysis: - 2020 (R studio) ](https://github.com/aciandri/University_Projects/tree/main/univariate_financial_ts)
-This is a part of a group project I worked on with my former classmate Dai Xuanye for the exam "Economic Statistics" attended during the last year of my B.Sc. at the University of Florence. The course was held by Professor Cipollini, whom provided us with some useful functions used in analysis.
+This is part of a group project I worked on with my former classmate Dai Xuanye for the exam "Economic Statistics" attended during the last year of my B.Sc. at the University of Florence. The course was held by Professor Cipollini, who provided us with some useful functions used in analysis.
 
-The goal was to carry out a univariate time series analysis to study the trend of the daily cloring prices of the financial title "Alibaba Group Holding Limited (BABA)" over time. Specifically, we used the data referred to the time period 19709/2014-31/01/2020. We began the analysis with an EDA (Exploratory Data Analysis), residuals analysis of an ARMA model and an ARCH test to check the homoskedasticity of the series. We then applied GARCH and ARMA models to fit the data and obtained forecasts 10 steps ahead.
+The goal was to carry out a univariate time series analysis to study the trend of the daily closing prices of the financial title "Alibaba Group Holding Limited (BABA)" over time. Specifically, we used the data referred to the period 19709/2014-31/01/2020. We began the analysis with an EDA (Exploratory Data Analysis), a residuals analysis of an ARMA model and an ARCH test to check the homoskedasticity of the series. We then applied GARCH and ARMA models to fit the data and obtained forecasts 10 steps ahead.
 
 The exam was composed of an oral exam and a group project and was graded as 30/30 by the Professor.
 
-### 5: [Univariate economic time serie analysis: - 2020](https://github.com/aciandri/University_Projects/tree/main/univariate_economic_ts)
+### [ 5: Univariate economic time series analysis: - 2020 (R studio) ](https://github.com/aciandri/University_Projects/tree/main/univariate_economic_ts)
+This is part of a group project I worked on with my former classmate Dai Xuanye for the exam "Economic Statistics" attended during the last year of my B.Sc. at the University of Florence. The course was held by Professor Cipollini, who provided us with some useful functions used in analysis.
+
+The goal was to carry out a univariate time series analysis to study the trend of the commercial balance of the trades between Italy and China
+
+The exam was composed of an oral exam and a group project and was graded as 30/30 by the Professor.
+
+
+
+
 
 
 

@@ -464,30 +464,6 @@ text(m_tree_best, pretty = T)
 errori[3,] = c('Albero di classificazione', round(c(1-err_tree[1],err_tree[2:4]), 4 ))
 ```
 
-# MARS
-```{r}
-library(polspline)
-m_mars = polymars(dati$y,dati[,-which(colnames(dati) == 'y')],factors = which(colnames(dati[-which(colnames(dati) == 'y')]) %in% qual),gcv = 1)
-m_mars$model
-# valutiamo errore tramite CV sul modello selezionato (tramite GCV)
-# Sfruttiamo il fatto che si tratta di un modello lineare per misurare
-# errore tramite convalida
-X_mars = design.polymars(m_mars, dati[,-which(colnames(dati) == 'y')])
-Xm = data.frame(y = dati$y, X_mars)
-err_tmp = matrix(NA, nfold,4)
-for(j in 1:nfold){
-  m_tmp = lm(y~-1+.,Xm[cv_id == j, ])
-  pr_tmp = predict(m_tmp, newdata =  Xm[cv_id == j, ])
-  print(table(factor(pr_tmp > .5, levels = c(F,T)), factor(dati$y[cv_id == j])))
-  err_tmp[j,] =  fun.errori(pr_tmp > .5, dati$y[cv_id == j])
-}
-# In questo caso facciamo solo valutazione dell'errore
-err_mars = colMeans(err_tmp)
-err_mars
-
-errori[4,] = c('MARS', round(c(1-err_mars[1],err_mars[2:4]), 4))
-```
-
 # Risultati
 ```{r}
 errori$Accuratezza = as.numeric (errori$Accuratezza)

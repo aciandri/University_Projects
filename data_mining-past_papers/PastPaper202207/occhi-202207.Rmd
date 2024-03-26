@@ -1,0 +1,501 @@
+---
+title: "occhi-202207"
+author: "Aurora Ciandri"
+date: "2023-11-28"
+output: html_document
+---
+
+Uno studio di neuroscienze cognitive è finalizzato a capire se il movimento degli occhi permette di identificare se una persona mente o è sincera. 
+
+Se ciò fosse possibile, i risultati della ricerca potrebbero ad esempio essere utilizzati in ambito forense o fornire suggerimenti al neuromarketing.
+
+In un esperimento è stato chiesto a 100 partecipanti di raccontare davanti  ad una telecamera due storie, una vera (class=0) e un'altra inventata (class=1). Durante il racconto di ciascuna storia un software ha raccolto gli spostamenti dell’occhio del partecipante. Le informazioni istantanee sul movimento dell’occhio sono state poi sintetizzate in un certo numero di indicatori. 
+Questi si riferiscono, separatamente, a “sguardi” (gaze) o “fissazioni” (fixations). 
+Le fissazioni sono definite come uno sguardo in cui gli occhi si fermano per un tempo minimo di 100 millisecondi.
+
+Il dataset occhi.csv comprende alcuni risultati dell’esperimento. 
+Per ciascuna fissazione il software fornisce le posizioni in ascissa e ordinata e la sua durata, mentre per gli sguardi si registrano ascissa, ordinata, e istante di tempo dell’osservazione.
+
+Per semplificare l’analisi il gruppo di ricerca ha aggregato le informazioni  relative a tutti gli sguardi e le fissazioni di ogni storia utilizzando alcuni 
+indicatori: 
+- numero (n), 
+- ascissa (x), 
+- ordinata (y), 
+- durata (duration), 
+- distanza (orizzontale: dx, verticale: dy, euclidea: deuclidean), 
+- intervallo di tempo (dtime), 
+- velocità (orizzontale: speed_x, verticale: speed_y, direzionale: speed_euclidean), 
+- accelerazione (orizzontale: acc_x, verticale: acc_y, direzionale: acc_euclidean). 
+
+Per ciascuno di questi indicatori si sono registrate: media, mediana, varianza, deviazione standard, massimo, minimo, somma.
+
+Al fine di avere una misura che considerasse l'effetto specifico di ciascun partecipante, i ricercatori hanno, inoltre, ricalcolato tutte le variabili per il soggetto senza distinguere tra storie veritiere e storie false, ottenendo un profilo medio per ciascun partecipante (_baseline_). 
+Per ciascuna variabile si è poi ottenuta la differenza delle variabili osservate con il profilo medio (_baseline_) per ciascun partecipante. Queste quantità sono riportate nel dataset e indicate col prefisso subj.
+
+Sono infine disponibili alcune informazioni sul partecipante (sesso, età) e sull'esperimento (tester_id, tester_quality_grade_x, tester_quality_grade_y).
+
+```{r dati, echo= F}
+rm(list = ls())
+dati = read.csv ('/Users/aurora/Desktop/labDM_2023/esami_passati/esame-202207_occhi/occhi.csv')
+#dati = read.csv ('H:/dm-pp/occhi.csv')
+
+setwd("/Users/aurora/Desktop/data_mining/")
+#source("H:/dm-pp/dm_funzioni.R")
+source('script-data_mining/dm_funzioni.R')
+str(dati) # 198 oss 418 variabili
+```
+
+
+```{r librerie}
+### Librerie ### 
+library(tidyverse)
+library(dplyr)
+library(RColorBrewer)
+library(ggpubr)
+library(kableExtra) # tabelle belle
+```
+
+```{r indicatrice di riga}
+length(unique(dati$tester_id)) # 99
+length(unique(dati$study_id)) # 2
+length(unique(dati$item_id)) # 4
+
+table(dati$study_id, dati$class)
+table(dati$item_id, dati$class)
+
+
+dati$index = NULL
+
+```
+
+```{r costanti}
+## Controllo variabili costanti 
+n = 0
+for (el in colnames(dati %>% select(-class))){
+  if (length(unique(dati[,el])) == 1){ 
+    dati = dati[,-which(colnames(dati) == el)]
+     print(el)
+    n = n+1
+  } }
+n # 64 variabili costanti
+
+str(dati) # 353 variabili rimanenti
+```
+```{r missing}
+miss = NA_fun(dati) # 12 dati mancanti per età.
+# controllo se i missing sono tutti degli stessi soggetti o possiamo imputarli.
+for(i in which(is.na(dati$age))) print(dati$tester_id[i]) # non possiamo imputarli.
+
+## istogramma sull'età
+  ggplot(dati, aes(x=age)) + geom_histogram(color = 'black') +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + ylab("") +
+  #xlim(0,1e05) + # per vederlo un po' meglio, troppo skewed
+  xlab("Istogramma")
+  
+  
+dati$age[which(is.na(dati$age))] = round(median(dati$age[which(!is.na(dati$age))])) # imputiamo alla media.
+```
+```{r relazioni biunivoche}
+rel_biun(dati$tester_id, dati$tester_display_name)
+dati$tester_display_name = NULL
+
+table(dati$class, dati$item_id)
+dati$item_id = NULL # leaker
+```
+```{r baseline}
+# togliamo le variabili con subj perché è uno scarto dalla media del singolo soggetto e quindi è informazione ridondante. [[non ci interessa l'effetto del partecipante, nelle condizioni reali non abbiamo una baseline]]
+dati[, grep('subj', colnames(dati))] = NULL
+dim(dati) # 198 179
+```
+
+```{r std.err & varianza}
+# Abbiamo sia var e std.dev => stessa informazione -> togliamo la varianza
+length(grep('var', colnames(dati)))
+length(grep('std', colnames(dati)))
+split_std = strsplit(colnames(dati[,grep('std', colnames(dati))]), '_std')
+for (el in strsplit(colnames(dati[,grep('var', colnames(dati))]), '_var')){
+  if(!el %in% split_std ) print(el)
+}
+
+
+dati[,grep('var', colnames(dati))] = NULL
+
+# stessa cosa con la media (teniamo mediana perché più robusto)
+length(grep('mean', colnames(dati))) # 52
+length(grep('median', colnames(dati))) # 34
+split_mean = strsplit(colnames(dati[,grep('mean', colnames(dati))]), '_mean')
+split_median = strsplit(colnames(dati[,grep('median', colnames(dati))]), '_median')
+
+for (el in split_median){
+  if(!el %in% split_mean ) print(el)
+}
+for(el in split_mean){
+  if(!el %in% split_median) print(el)
+}
+
+dati[,grep('median', colnames(dati))] = NULL # togliamo median perché non la abbiamo per tutte le variabili
+
+
+str(dati) # 198 136
+```
+```{r}
+#tolgo id studio non serve a nulla
+dati$study_id = NULL
+```
+
+
+```{r quantqual}
+qual = c()
+quant = c()
+for (nome in colnames(dati %>% select(-class))){ 
+  if (is.numeric(dati[, nome])){quant = c(quant, nome)} 
+  else{
+    qual = c(qual, nome)
+    #if(is.character(dati[, nome])){ dati[,nome] = factor(dati[,nome]) }
+  }
+}
+
+quant
+qual
+
+quantqual = c()
+for(el in quant){
+  if(length(unique(dati[,el])) < 6) {
+    print(el)
+    quantqual = c(quantqual, el)
+    }
+}
+quantqual = quantqual[-which(quantqual == c("fix_duration_min" , "gaze_dtime_median", "subj_fix_duration_min", "subj_gaze_dtime_median"))]
+quantqual = quantqual[-4]
+
+for(el in quantqual){
+  dati[,el] = factor(dati[,el])
+  quant = quant[-which(quant == el)]
+  qual = c(qual, el)
+}
+
+dati$tester_id = factor(dati$tester_id)
+qual = c(qual, "tester_id")
+quant = quant[-which(quant == "tester_id")]
+dati$sex = factor(dati$sex)
+
+rm(quantqual)
+str(dati)
+
+table(dati$tester_quality_grade_x)
+table(dati$tester_quality_grade_y)
+
+qual = c(qual, 'tester_quality_grade_x', 'tester_quality_grade_y')
+quant = setdiff(names(dati %>% select(-class)), qual)
+```
+
+
+# Convalida incrociata
+```{r CV tester_id}
+## Convalida incrociata (osservazioni dello stesso soggetto nello stesso fold)
+id_tot = c(1:dim(dati)[1]) # tutti gli id del dataset
+nfold = 4 # numero fold
+check = c() # inserisco le osservazioni già assegnate ad un fold in termini di id del datset
+cv_id = rep (NA, dim(dati)[1]) # inserisco le assegnazioni dei fold (inizializzo come un vettore n di NA)
+
+set.seed (123)
+for (i in 1:nfold){
+  # dati non ancora usati
+  usare = setdiff(id_tot, check)
+  
+  # salvo gli id delle osservazioni campionate per quel fold
+  set.seed(1)
+  usati = sample(unique(dati$tester_id[usare]),floor(length(unique(dati$tester_id))/nfold))
+  print(usati)
+  passo = which(dati$tester_id %in% usati) # quali tester_id sono stati usati in questo passo
+  check = c(check, passo) # aggiungo le osservazioni usate in questo passo a quelle usate in generale.
+  cv_id[passo] = i
+}
+table(cv_id)
+cv_id
+length(which(is.na(cv_id))) # 18 osservazioni rimangono fuori => 2 osservazioni per 9 indici
+rm(check)
+rm(id_tot)
+rm(passo)
+
+## Assegno le osservazioni rimaste fuori (i.e. NA)
+mmm = which(is.na(cv_id))
+set.seed(1)
+new = sample(unique(cv_id)[-length(unique(cv_id))]) # nell'ultimo slot c'era NA.
+
+n = 1
+for (i in which(is.na(cv_id))){
+  print(i)
+  if (i == n+1) cv_id[i] = cv_id[i-1] # sono osservazioni relative allo stesso soggetto
+  else{ 
+    set.seed(i)
+    cv_id[i] = sample(new, 1)
+  }
+  n = i
+  new = setdiff(new, cv_id[i])
+  print(new)
+}
+cv_id[ mmm]
+table(cv_id)
+cv_ok(dati$tester_id) # controllo se le ho assegnate bene (ergo stesso soggetto => stesso fold)
+```
+
+
+```{r CV tester_id}
+dati$tester_id = NULL
+s = .5
+dati[,quant] = scale(dati[, quant])
+```
+
+## Esplorativa
+```{r grafici risposta}
+risp1 <- ggplot(dati, aes(x=class)) +
+  geom_bar() + # più liscio
+  # geom_histogram(bins = 50, alpha = 0.5) +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + ylab("") +
+  xlab("Distribuzione amrginale della risposta")
+```
+Classi bilanciate => posso valutare i modelli in base all'accuratezza. Ma ce lo potevamo immaginare: abbiamo due osservazioni per classe
+
+```{r correlazioni, eval = F}
+mat = data.frame(var1 = c(0), var2 = c(0), corr = c(0))
+quanti = which(names(dati) %in% quant)
+n = 1
+for(i in quanti){
+  rimanenti = quanti[quanti> i ]
+  for(j in rimanenti){
+    mat[n,] = c(colnames(dati)[i], colnames(dati)[j], cor(dati[,i], dati[,j]))
+    n = n+1
+    }
+  }
+mat
+mat[, 3] = as.numeric(mat[,3])
+dim(mat[(mat$corr > .9 | mat$corr < -.9),]) # 149 righe
+dim(mat[(mat$corr > .9 | mat$corr < -.9),]) # 67
+unique(mat[(mat$corr > .9 | mat$corr < -.9),'var1'])# 69
+unique(mat[(mat$corr > .95 | mat$corr < -.95),'var2'])# 81
+table(mat[(mat$corr > .95 | mat$corr < -.95),'var1'])# 51
+table(mat[(mat$corr > .95 | mat$corr < -.95),'var2'])# 53
+
+# variabili con alta correlazioni presenti almeno 2 volte nella matrice alta
+correlate = names(table(mat[(mat$corr > .95 | mat$corr < -.95),'var2'])
+                  [table(mat[(mat$corr > .95 | mat$corr < -.95),'var2']) > 1]) 
+correlate = c(correlate,names(table(mat[(mat$corr > .95 | mat$corr < -.95),'var1'])
+                  [table(mat[(mat$corr > .95 | mat$corr < -.95),'var1']) > 1]))
+correlate = unique(correlate) # 25 variabili
+
+```
+
+```{r}
+cc = unique(mat$var2[(mat$corr > .95 | mat$corr < -.95)]) 
+cc = c(cc, unique(mat$var1[(mat$corr > .95 | mat$corr < -.95)]))
+length(unique(cc)) # 94 variabili compongono le correlazioni altissime
+```
+
+
+
+
+```{r grafici sulle esplicative (alcune)}
+colnames(dati)
+
+ 
+ # genere
+  ggplot(dati, aes(x=sex)) +
+  geom_bar() + # più liscio
+  # geom_histogram(bins = 50, alpha = 0.5) +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + ylab("") 
+  
+  # Age
+  ggplot(dati, aes(x=age)) + geom_histogram(color = 'black') +
+  theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) + ylab("") +
+  #xlim(0,1e05) + # per vederlo un po' meglio, troppo skewed
+  xlab("Istogramma")
+```
+Ci sono più femmine che maschi.
+Età skewed verso sinistra: ci sono più giovani che vecchi. Outlier verso i 50 anni, ma la maggior parte stanno prima dei 40.
+
+# Ridge
+```{r}
+# Proviamo un lasso con tutte le interazioni bivariate tra i farmaci
+#names(dati)
+#farmaci = names(dati)[3:20]
+#fb = paste0(farmaci, collapse = "+")
+#ff = paste0("y ~ -1 + x1+x2+ (", fb, ")^2")
+#dati = rename(dati, y = class)
+XX = model.matrix(as.formula('y~.'), dati) # levare l'intercetta dipende dal modello (non bisogna metterla 2 volte). Senza intercetta, avrò K dummy e non K-1
+library(glmnet)
+# posso utilizzare la funzione cv.glmnet specificando l'argomento foldid
+# in questo caso utilizza MSE, che potrebbe non essere un criterio opportuno per noi
+
+# lanciamo una volta per avere una griglia di valori di lambda, cioè modelli candidati
+# m_ridge_f = glmnet(x = XX, y = dati$y, family = 'binomial', alpha = 0)#, lambda.min.ratio = 0.00001)
+## posso sceglierla da sola la griglia? Si. Altrimenti cambia lambda.max e lambda.min.ratio.
+lambda.grid = exp(seq(-15, 4, length = 150)) 
+m_ridge_f = glmnet(x = XX, y = dati$y, family = 'binomial', alpha = 0, lambda = lambda.grid)#, lambda.min.ratio = 0.00001)
+
+err_tmp = array(NA, dim = c(nfold,4,length(lambda.grid)))
+s = 0.5 # soglia
+
+for(j in 1:nfold){
+  ridge_tmp = glmnet(x = XX[cv_id != j, ], y = dati$y[cv_id!= j],lambda = lambda.grid, alpha = 0, family = 'binomial')
+  pr_ridge = predict(ridge_tmp, XX[cv_id == j, ])
+  err_tmp[j,,] = apply(pr_ridge > s, 2, function(x) fun.errori(x, dati$y[cv_id == j]))
+}
+err_all = apply(err_tmp, c(2,3), mean)
+# utile per i grafici successivi
+err_labs = c("Errore di classificazione", "Recupero", "Precisione","F1")
+matplot(log(lambda.grid), t(err_all), type = "p", pch = 16,
+        xlab = expression(log(lambda)), ylab = "Metriche",
+        main = "Modello lineare con penalizzazione ridge \n Errore di convalida incrociata")
+legend("topright", col = 1:4, pch = 16, legend = err_labs) 
+
+bb = which.min(err_all[1,])
+bb
+abline(v = log(lambda.grid)[which.min(err_all[1,])])
+err_ridge = err_all[,bb]
+errori = data.frame( Modello = c('Ridge'),
+                     Accuratezza = c(round(1-err_ridge[1], 4)),
+                     Recupero = c(round(err_ridge[2], 4)),
+                     Precisione = c(round(err_ridge[3], 4)),
+                     F1 = c(round(err_ridge[4], 4)))
+# accuratezza 0.5502
+
+c_ridge = coef(m_ridge_f)[,bb]
+c_ridge[2:length(c_ridge)]
+m_ridge_f$lambda[bb]
+
+
+```
+
+
+# Lasso
+```{r lasso-convalida incrociata}
+#dati = rename(dati, y = class)
+#XX = model.matrix(as.formula('y~.'), dati)
+
+library(glmnet)
+
+# lanciamo una volta per avere una griglia di valori, cioè modelli candidati
+lambda.grid = exp(seq(-8, 10, length = 150)) 
+m_lasso_f = glmnet(x = XX, y = dati$y, penalty.factor = 1/abs(c_ridge[2:length(c_ridge)]), family = 'binomial', lambda = lambda.grid) # tolgo l'intercetta dai coefficienti del modello ridge.
+#lambda.grid = m_lasso_f$lambda
+
+err_tmp = array(NA, dim = c(4,4,length(lambda.grid)))
+
+for(j in 1:nfold){
+  lasso_tmp = glmnet(x = XX[cv_id != j, ], y = dati$y[cv_id!= j],lambda = lambda.grid, penalty.factor = 1/abs(c_ridge[2:length(c_ridge)]), family = 'binomial')
+  pr_lasso = predict(lasso_tmp, XX[cv_id == j, ])
+  err_tmp[j,,] = apply(pr_lasso > s, 2, function(x) fun.errori(x, dati$y[cv_id == j]))
+}
+err_all = apply(err_tmp, c(2,3), mean) # medie per fold
+# utile per i grafici successivi
+err_labs = c("Errore di classificazione", "Falsi positivi", "Falsi negativi","F1")
+matplot(log(m_lasso_f$lambda), t(err_all), type = "p", pch = 16,
+        xlab = expression(log(lambda)), ylab = "Metriche",
+        main = "Modello lineare con penalizzazione lasso \n Errore di convalida incrociata")
+legend("bottomleft", col = 1:4, pch = 16, legend = err_labs, cex = .75) 
+
+bb = which.min(err_all[1,]) # voglio minimizzare l'errore di classificazione (1-accuracy) perché abbiamo un dataset bilanciato
+bb # 132
+abline(v = log(m_lasso_f$lambda)[bb])
+err_lasso = err_all[,bb]
+# errori = data.frame(Modello = 'Lasso', Errore_clf = err_lasso[1], Recupero = err_lasso[2], Precisione = err_lasso[3], F1 = err_lasso[4])
+errori[2,] = c('Lasso', round(c(1-err_lasso[1],err_lasso[2:4]), 4))
+c_lasso = coef(m_lasso_f)[,bb]
+
+c_lasso = round(c_lasso[c_lasso!=0],3)
+sort(c_lasso)
+length(c_lasso) # 78 termini compresa l'intercetta
+m_lasso_f$lambda[which.min(err_all[1,])]
+
+```
+Si seleziona il modello lasso in base alla convalida incrociata: si parte adattando il lasso su tutti i dati per selezionare la griglia di valori per \lambda da provare. Si crea poi una matrice che calcola il lasso per ogni fold e per ogni valore di \lambda si calcolano i valori degli errori di classificazione. Si fa poi la media per ogni fold e si sceglie lambda.
+Il lasso seleziona 35 variabili. Il valore di \lambda che minimizza l'errore di classificazione è 0.027: applicando tale parametro al modello si ottiene un errore di classificazione pari a 0.467.
+
+# Albero di classificazione
+```{r convalida incrociata, eval = F}
+library(tree)
+m_tree_full = tree(factor(y) ~ . , data=dati,
+                   split = "deviance",
+                   control=tree.control(nobs=NROW(dati),
+                                        minsize=2,
+                                        mindev=0.0000001))
+plot(m_tree_full)
+m_tree_full$frame
+dim(m_tree_full$frame) # numero nodi
+dim(m_tree_full$frame[m_tree_full$frame$var == "<leaf>",]) # 33 foglie
+
+
+# in questo caso possiamo fare regolazione solo rispetto alla complessità del modello
+# che è meglio di niente, ma diverso da quanto abbiamo fatto finora
+
+err_m = array(NA, c(nfold,23, 4))
+dimnames(err_m) = list("FOLD" = NULL, "SIZE" = NULL, "ERRORI" = NULL)
+for(j in 1:nfold){
+  m_tree = tree(factor(y) ~ . , data=dati[cv_id != j, ],
+                split = "deviance",
+                control=tree.control(nobs=NROW(dati),
+                                     minsize=2,
+                                     mindev=0.00001))
+  print('albero')
+  tree_list = lapply(2:24, function(l) prune.tree(m_tree, newdata = dati[cv_id == j,], best = l))
+  pred_list = lapply(tree_list, function(x) predict(x, dati[cv_id == j, ]))
+  print('pred')
+  err_list = lapply(pred_list, function(x) fun.errori(x[,2] > .5, dati$y[cv_id == j]))
+  err_m[j,,] = do.call(rbind, err_list)
+  print(j)
+}
+
+err_albero = apply(err_m, c(2,3), mean)
+
+err_labs = c("Errore di classificazione", "Falsi positivi", "Falsi negativi","F1")
+matplot(err_albero, type = "p", pch = 16)
+legend("bottomright", col = 1:4, pch = 16, legend = err_labs) 
+
+B = which.min(err_albero[,1]) # dimensione 2
+abline(v = B)
+err_tree = err_albero[B,]
+err_tree
+
+m_tree_best = prune.tree(m_tree_full, best = B)
+plot(m_tree_best)#, type = 'uniform')
+text(m_tree_best, pretty = T)
+
+errori[3,] = c('Albero di classificazione', round(c(1-err_tree[1],err_tree[2:4]), 4 ))
+```
+
+# MARS
+```{r}
+library(polspline)
+m_mars = polymars(dati$y,dati[,-which(colnames(dati) == 'y')],factors = which(colnames(dati[-which(colnames(dati) == 'y')]) %in% qual),gcv = 1)
+m_mars$model
+# valutiamo errore tramite CV sul modello selezionato (tramite GCV)
+# Sfruttiamo il fatto che si tratta di un modello lineare per misurare
+# errore tramite convalida
+X_mars = design.polymars(m_mars, dati[,-which(colnames(dati) == 'y')])
+Xm = data.frame(y = dati$y, X_mars)
+err_tmp = matrix(NA, nfold,4)
+for(j in 1:nfold){
+  m_tmp = lm(y~-1+.,Xm[cv_id == j, ])
+  pr_tmp = predict(m_tmp, newdata =  Xm[cv_id == j, ])
+  print(table(factor(pr_tmp > .5, levels = c(F,T)), factor(dati$y[cv_id == j])))
+  err_tmp[j,] =  fun.errori(pr_tmp > .5, dati$y[cv_id == j])
+}
+# In questo caso facciamo solo valutazione dell'errore
+err_mars = colMeans(err_tmp)
+err_mars
+
+errori[4,] = c('MARS', round(c(1-err_mars[1],err_mars[2:4]), 4))
+```
+
+# Risultati
+```{r}
+errori$Accuratezza = as.numeric (errori$Accuratezza)
+ris = errori[order(errori[,2], decreasing = T),]
+ris
+ris%>%
+  knitr::kable(caption = "Riassunto dei risultati", digits=3,
+               col.names = colnames(errori),
+               booktabs = T)  %>%
+  kableExtra::kable_styling(font_size = 12)
+```

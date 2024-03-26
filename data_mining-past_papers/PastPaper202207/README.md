@@ -71,10 +71,3 @@ Being a normalization L1 norm, this model automatically selects the most relevan
   3. Following the growth and pruning procedures (aimed respectively at minimizing the residual deviance and avoiding overfitting of the model), the resulting tree has an accuracy equal to 0.5406 and selected 2 features: the average duration of the fixations and the sum of the ordinates of the glances.
 
 In conclusion, none of these models seemed to indicate that eye movements are a good indicator of the sincerity of a person.
-
-
-
-
-
-
-

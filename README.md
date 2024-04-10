@@ -14,7 +14,7 @@ This folder contains some of the past papers I independently carried out to prep
 
 Every task proposed aimed to test our problem-solving abilities regarding various problems that might be encountered during data analysis, as well as our capabilities to choose the right procedure and models to complete the assignment.
 
-The exam was composed of a theoretical part and a practical one (the files contained in this folder are some examples of exam-like tasks) to be done in about 3 hours total. I sustained the exam on 31/01/2024 and obtained a grade of 26/30 (the highest grade assigned for that test).
+The exam was composed of a theoretical part and a practical one (the files contained in this folder are some examples of exam-like tasks) to be executed in about 3 hours total. I sustained the exam on 31/01/2024 and obtained a grade of 26/30 (the highest grade assigned for that test).
 
 ### [ 2: Credit card fraud detection - 2021 (Python)](https://github.com/aciandri/University_Projects/tree/main/credit_card_fraud)
 This is a group project I worked on with two of my former classmates for the exam of "Fundamentals of Information Systems" attended the first semester of the first year of my Master's degree. The course provided insights on both the algorithmic theory and practical basics of informatics (for instance, data structure) on Python and was held by Professors Di Nunzio and Silvello.

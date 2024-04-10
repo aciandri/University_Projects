@@ -9,7 +9,7 @@ In this file, I'll show a quick overview of all the projects uploaded to the rep
 4. Project structure - a step-by-step breakdown of the analysis process.
 5. (Enhancements and Learnings - since most of the projects presented are quite dated, this section contains eventual improvements I would introduce with the knowledge I've gained throughout time).
 
-### [ 1: Data mining past papers - 2023 (R studio) ] (https://github.com/aciandri/University_Projects/tree/main/data_mining-past_papers)
+### [ 1: Data mining past papers - 2023 (R studio)](https://github.com/aciandri/University_Projects/tree/main/data_mining-past_papers)
 This folder contains some of the past papers I independently carried out to prepare for the "Data Mining" exam held by Professor Bruno Scarpa and provided by the Statistical Department of the University of Padua.
 
 Every task proposed aimed to test our problem-solving abilities regarding various problems that might be encountered during data analysis, as well as our capabilities to choose the right procedure and models to complete the assignment.

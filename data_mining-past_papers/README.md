@@ -1,5 +1,7 @@
 # Past papers for the exam of Data Mining (2023)
-This folder contains some of the past papers I independently carried out to prepare for the “Data Mining“ exam held by Professor Bruno Scarpa and supplied by the Statistical Department of the University of Padua.
+This folder contains some of the past papers I independently carried out to prepare for the "Data Mining" exam held by Professor Bruno Scarpa and provided by the Statistical Department of the University of Padua.
+
+Every task proposed aimed to test our problem-solving abilities regarding various problems that might be encountered during data analysis, as well as our capabilities to choose the right procedure and models to complete the assignment.
 
 The exam was composed of a theoretical part and a practical one (the files contained in this folder are some examples of exam-like tasks) to be done in about 3 hours total. I sustained the exam on 31/01/2024 and obtained a grade of 26/30 (the highest grade assigned for that test).
 
